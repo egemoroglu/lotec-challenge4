@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-
 export const SignUpPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

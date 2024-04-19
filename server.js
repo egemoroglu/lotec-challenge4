@@ -1,16 +1,27 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import  dynamoDB  from './database/connection';
+import  dynamoDB  from './database/connection.js';
 import {v4 as uuidv4} from 'uuid';
-import {DocumentClient} from 'aws-sdk/clients/dynamodb';
+//import {DocumentClient} from 'aws-sdk/clients/dynamodb';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const app = express();
 const PORT = 5173;
 
-const dbClient: DocumentClient = dynamoDB;
+const dbClient = dynamoDB;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname)));
+
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/signup', async (req, res) => {
     try{
@@ -18,7 +29,7 @@ app.post('/signup', async (req, res) => {
         const id = uuidv4();
         console.log("Sign up request received");
 
-        const params: DocumentClient.PutItemInput = {
+        const params = {
             TableName: "egemoroglu-users",
             Item: {
                 id: {S: id},
