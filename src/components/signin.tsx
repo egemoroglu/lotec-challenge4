@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom'
-export const SignUpPage: React.FC = () => {
+export const SignInPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSignUp = async () => {
-        console.log("Sign up button clicked");
+    const handleSignIn = async () => {
+        console.log("Sign in button clicked");
         try {
-            const response = await axios.post("/signup", {
+            const response = await axios.post("/signin", {
                 username,
                 password
             });
@@ -19,8 +19,8 @@ export const SignUpPage: React.FC = () => {
     };
 
     return(
-        <div className='signup-div'>
-            <h1>Sign Up</h1>
+        <div className='signin-div'>
+            <h1>Sign In</h1>
             <input
                 type="text"
                 className='username-input'
@@ -35,9 +35,9 @@ export const SignUpPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button className='signup-btn' onClick={handleSignUp}>Sign Up</button>
+            <button className='signup-btn' onClick={handleSignIn}>Sign In</button>
             {/**If the user already have an account link to signin page */}
-            <Link to="/signin">Already have an account? Sign in</Link>
+            <Link to="/">Don't have an account? Sign up</Link>
         </div>
 
     )

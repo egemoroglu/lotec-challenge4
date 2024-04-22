@@ -1,6 +1,9 @@
 import './App.css'
-//import { Todo } from './components/todoList'
+//import { Todo } from './components/todo'
 import {SignUpPage} from './components/signup'
+import {SignInPage} from './components/signin'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
 
 function App() {
   
@@ -14,7 +17,12 @@ function App() {
           <li>TODO List</li>
         </ul>
       </div>
-      <SignUpPage />
+      <Router>
+        <Routes>
+          <Route path="/" element={<SignUpPage />} />
+          <Route path="/signin" element={<SignInPage />} />
+        </Routes>
+      </Router>
     </div>
       
     </>

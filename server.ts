@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 const app = express();
-const PORT = 5173;
+const port = process.env.PORT || 3000;
 
 const dbClient = dynamoDB;
 const __filename = fileURLToPath(import.meta.url);
@@ -17,11 +17,6 @@ const __dirname = dirname(__filename);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
 
-
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 app.post('/signup', async (req, res) => {
     try{
@@ -32,9 +27,9 @@ app.post('/signup', async (req, res) => {
         const params = {
             TableName: "egemoroglu-users",
             Item: {
-                id: {S: id},
-                username: {S: username},
-                password: {S: password}
+                id: id,
+                username: username,
+                password: password
             }
         };
         await dbClient.put(params).promise();
@@ -46,6 +41,6 @@ app.post('/signup', async (req, res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
 });
