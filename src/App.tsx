@@ -2,6 +2,7 @@ import './App.css'
 //import { Todo } from './components/todo'
 import {SignUpPage} from './components/signup'
 import {SignInPage} from './components/signin'
+import {Todo} from './components/todo'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/todo" element={<Todo />} />
         </Routes>
       </Router>
     </div>
