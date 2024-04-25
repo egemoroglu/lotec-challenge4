@@ -8,12 +8,14 @@ export const SignUpPage: React.FC = () => {
     const handleSignUp = async () => {
         console.log("Sign up button clicked");
         try {
-            const response = await axios.post("/signup", {
+            const response = await axios.post("http://localhost:3000/signup", {
                 username,
                 password
             });
+            alert("User successfully signed up")
             console.log(response.data);
         } catch (error) {
+            alert('Error: User cannot be signed up')
             console.error(error);
         }
     };

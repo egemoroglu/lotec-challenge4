@@ -8,12 +8,14 @@ export const SignInPage: React.FC = () => {
     const handleSignIn = async () => {
         console.log("Sign in button clicked");
         try {
-            const response = await axios.post("/signin", {
+            const response = await axios.post("http://localhost:3000/signin", {
                 username,
                 password
             });
             console.log(response.data);
+            alert("User successfully signed in")
         } catch (error) {
+            alert('Error: User cannot be signed in')
             console.error(error);
         }
     };
