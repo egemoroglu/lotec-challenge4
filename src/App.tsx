@@ -12,10 +12,7 @@ function App() {
     <>
     <div className="App">
       <div className='navbar'>
-        <ul>
-          <li>Home</li>
-          <li>TODO List</li>
-        </ul>
+        <h2>Todo App</h2>
       </div>
       <Router>
         <Routes>

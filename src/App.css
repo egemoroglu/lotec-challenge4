@@ -66,21 +66,55 @@
 
 }
 .container {
-width: 200px;
-margin: 0 auto;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .container .todo {
-display: flex;
-flex-direction: column;
-padding: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
 
 .container .card {
-background-color: rgb(90, 90, 90);
-padding: 10px;
-margin: 10px;
-border-radius: 5px;
-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-color: rgb(255, 255, 255);
+  background-color: rgb(90, 90, 90);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container .card h3{
+  margin: 0;
+
+}
+.container .addInput{
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  width: calc(100% - 40px);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
+  background-color: rgb(90, 90, 90);
+}
+
+.container .addButton{
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
+  background-color: rgb(90, 90, 90);
+}
+.container .todoDropdown{
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
+  background-color: rgb(90, 90, 90);
 }

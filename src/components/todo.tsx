@@ -13,11 +13,17 @@ type Todo = {
 export function Todo() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [updatedTaskTitle, setUpdatedTaskTitle] = useState('');
   const [filter, setFilter] = useState<string>("all");
+  const [editModeId, setEditModeId] = useState<string | null>(null);
+  const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
   const location = useLocation();
   const username = location.state.username;
 
   useEffect(() => {
+    fetchTodos();
+  }, [fetchTrigger])
+    
     const fetchTodos = async () => {
       try {
         // Make API call to fetch todos for the signed-in user
@@ -33,9 +39,6 @@ export function Todo() {
       }
     };
 
-    fetchTodos();
-  }, [username]);
-
   const handleTaskAdd = async () => {
     try {
       // Make API call to add a new task
@@ -49,6 +52,7 @@ export function Todo() {
     } catch (error) {
       console.error('Error adding task:', error);
     }
+    setFetchTrigger(!fetchTrigger);
   };
 
   const handleDeleteTask = async (todoId: string) => {
@@ -59,27 +63,43 @@ export function Todo() {
     } catch (error) {
       console.error('Error deleting task:', error);
     }
+    setFetchTrigger(!fetchTrigger)
   }
 
   const handleMarkDone = async (todoId: string) => {
     try{
       // Make API call to mark a task as done
-      console.log("Marking task as done", todoId);
       const response = await axios.post(`http://localhost:3000/markdone?todoId=${todoId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error marking task as done:', error);
     }
+    setFetchTrigger(!fetchTrigger)
   }
   const handleMarkUndone = async (todoId: string) => {
     try{
       // Make API call to mark a task as undone
-      console.log("Marking task as undone", todoId);
       const response = await axios.post(`http://localhost:3000/markUndone?todoId=${todoId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error marking task as undone:', error);
     }
+    setFetchTrigger(!fetchTrigger)
+  }
+
+  const handleUpdateTask = async (todoId: string, updatedTaskTitle: string) => {
+    try {
+      // Make API call to update the title of a task
+      const response = await axios.post(`http://localhost:3000/update`, {
+        todoId: todoId,
+        title: updatedTaskTitle
+      });
+      console.log(response.data);
+      setEditModeId(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+    setFetchTrigger(!fetchTrigger)
   }
   const filteredTodos = todos.filter(todo => {
     if (filter === 'all') {
@@ -95,14 +115,14 @@ export function Todo() {
     <div className="container">
       <h1>Todo List</h1>
       {/* An input field for title and an add button to add a new task with the given title */}
-      <input type="text" value={newTaskTitle} onChange={(e) => setNewTaskTitle(e.target.value)} placeholder="Title" />
-      <button type="submit" onClick={handleTaskAdd}>Add</button>
+      <input className="addInput" type="text" value={newTaskTitle} onChange={(e) => setNewTaskTitle(e.target.value)} placeholder="Title" />
+      <button className="addButton" type="submit" onClick={handleTaskAdd}>Add</button>
 
       {/* Dropdown menu for filtering todos */}
-      <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">All</option>
-        <option value="done">Done</option>
-        <option value="undone">Undone</option>
+      <select className='todoDropdown' value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <option value="all">All Tasks</option>
+        <option value="done">Done Task</option>
+        <option value="undones">Undone Tasks</option>
       </select>
 
       <>
@@ -114,18 +134,31 @@ export function Todo() {
             <div className="todo">
               {filteredTodos.map((todo: Todo) => (
                 <div className="card" key={todo.todoId}>
-                  <h3>{todo.title}</h3>
-                  <p>Assignee: {todo.username}</p>
-                  <p>Status: {todo.done ? "Done" : "Not Done"}</p>
-                  {/* delete button for each task to delete it from the database */}
-                  <button onClick={() => handleDeleteTask(todo.todoId)}>Delete</button>
-                  {/* A button to mark a task as done if the task is undone */}
-                  {!todo.done && <button onClick={() => handleMarkDone(todo.todoId)}>Mark as done</button>}
-                  {/* A button to mark a task as undone if the task is done */}
-                  {todo.done && <button onClick={() => handleMarkUndone(todo.todoId)}>Mark as undone</button>}
-                  {/* A button to update the title of the task */}
-                  <button>Update</button>
-                </div>
+                {editModeId === todo.todoId ? (
+                  <>
+                    <input
+                      type="text"
+                      placeholder={todo.title}
+                      value={updatedTaskTitle}
+                      onChange={(e) => setUpdatedTaskTitle(e.target.value)}
+                    />
+                    <p>Assignee: {todo.username}</p>
+                    <p>Status: {todo.done ? "Done" : "Not Done"}</p>
+                    <button onClick={() => setEditModeId(null)}>Cancel</button>
+                    <button onClick={() => handleUpdateTask(todo.todoId, updatedTaskTitle)}>Save</button>
+                  </>
+                ) : (
+                  <>
+                    <h3>{todo.title}</h3>
+                    <p>Assignee: {todo.username}</p>
+                    <p>Status: {todo.done ? "Done" : "Not Done"}</p>
+                    <button onClick={() => handleDeleteTask(todo.todoId)}>Delete</button>
+                    {!todo.done && <button onClick={() => handleMarkDone(todo.todoId)}>Mark as done</button>}
+                    {todo.done && <button onClick={() => handleMarkUndone(todo.todoId)}>Mark as undone</button>}
+                    <button onClick={() => setEditModeId(todo.todoId)}>Edit</button>
+                  </>
+                )}
+              </div>
               ))}
             </div>
           </>

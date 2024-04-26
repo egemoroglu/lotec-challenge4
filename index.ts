@@ -115,7 +115,6 @@ app.post('/todos', async (req: Request, res: Response) => {
     try{
         const { title, username, done } = req.body;
         const todoId = uuidv4().toString();
-        console.log("Inside app.post(/todos)", {todoId, title, username, done});
         const params: DocumentClient.PutItemInput = {
             TableName: "egemoroglu-todos",
             Item: {
@@ -135,7 +134,6 @@ app.post('/todos', async (req: Request, res: Response) => {
 app.post('/markDone', async (req: Request, res: Response) => {
     try{
         const {todoId} = req.query;
-        console.log("Marking the task with the id: ", todoId);
         const params: DocumentClient.UpdateItemInput = {
             TableName: "egemoroglu-todos",
             Key: {
@@ -158,7 +156,6 @@ app.post('/markDone', async (req: Request, res: Response) => {
 app.post('/markUndone', async (req: Request, res: Response) => {
     try{
         const {todoId} = req.query;
-        console.log("Marking the task with the id: ", todoId);
         const params: DocumentClient.UpdateItemInput = {
             TableName: "egemoroglu-todos",
             Key: {
@@ -178,11 +175,30 @@ app.post('/markUndone', async (req: Request, res: Response) => {
     
 })
 
+app.post('/update', async (req: Request, res: Response) => {
+    try{
+        const {todoId, title} = req.body;
+        const params: DocumentClient.UpdateItemInput = {
+            TableName: "egemoroglu-todos",
+            Key: {
+                todoId: todoId
+            },
+            UpdateExpression: "set title = :title",
+            ExpressionAttributeValues: {
+                ":title": title
+            }
+        };
+        await dbClient.update(params).promise();
+        res.status(200).json({message: "Task successfully updated"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to update Task"});
+    }
+})
+
 app.post('/delete', async (req: Request, res: Response) => {
     try{
         const  {todoId} = req.query;
-        console.log("Deleting the task with the id: ", todoId);
-        console.log("Received request to delete todos for id", todoId);
         const params: DocumentClient.DeleteItemInput = {
             TableName: "egemoroglu-todos",
             Key: {
