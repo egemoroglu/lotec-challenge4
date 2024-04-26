@@ -6,7 +6,6 @@ export const SignUpPage: React.FC = () => {
     const [password, setPassword] = useState("");
 
     const handleSignUp = async () => {
-        console.log("Sign up button clicked");
         try {
             const response = await axios.post("http://localhost:3000/signup", {
                 username,
@@ -16,8 +15,9 @@ export const SignUpPage: React.FC = () => {
             console.log(response.data);
         } catch (error) {
             alert('Error: User cannot be signed up')
-            console.error(error);
         }
+        setUsername("");
+        setPassword("");
     };
 
     return(

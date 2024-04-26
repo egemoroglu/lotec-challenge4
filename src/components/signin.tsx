@@ -1,23 +1,26 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 export const SignInPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSignIn = async () => {
-        console.log("Sign in button clicked");
         try {
             const response = await axios.post("http://localhost:3000/signin", {
                 username,
                 password
             });
             console.log(response.data);
-            alert("User successfully signed in")
+            console.log("Sending the request");
+            navigate("/todos", {state: {username: username}});
+               
         } catch (error) {
             alert('Error: User cannot be signed in')
-            console.error(error);
         }
+        setUsername("");
+        setPassword("");
     };
 
     return(

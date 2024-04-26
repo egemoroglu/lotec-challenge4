@@ -1,5 +1,4 @@
 import './App.css'
-//import { Todo } from './components/todo'
 import {SignUpPage} from './components/signup'
 import {SignInPage} from './components/signin'
 import {Todo} from './components/todo'
@@ -22,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
-          <Route path="/todo" element={<Todo />} />
+          <Route path="/todos" element={<Todo />} />
         </Routes>
       </Router>
     </div>

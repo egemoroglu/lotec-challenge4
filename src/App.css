@@ -66,13 +66,13 @@
 
 }
 .container {
-width: 200px; /* Corrected typo in width value */
+width: 200px;
 margin: 0 auto;
 }
 
 .container .todo {
 display: flex;
-flex-direction: column; /* Ensure todos stack vertically */
+flex-direction: column;
 padding: 10px;
 }
 

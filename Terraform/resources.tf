@@ -40,7 +40,7 @@ resource "aws_dynamodb_table" "egemoroglu-todos" {
         type = "S"
     }
     attribute {
-        name = "assignee"
+        name = "username"
         type = "S"
     }
     attribute {
@@ -48,8 +48,8 @@ resource "aws_dynamodb_table" "egemoroglu-todos" {
         type = "S"
     }
     global_secondary_index {
-        name = "assignee-index"
-        hash_key = "assignee"
+        name = "username-index"
+        hash_key = "username"
         projection_type = "ALL"
     }
     global_secondary_index {

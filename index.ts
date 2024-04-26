@@ -24,13 +24,31 @@ app.use(express.static(path.join(__dirname)));
 app.use(cors());
 
 
+app.get('/todos',async (req: Request, res: Response) => {
+    const { username } = req.query;
+    try{
+        const params: DocumentClient.QueryInput = {
+            TableName: "egemoroglu-todos",
+            IndexName: "username-index",
+            KeyConditionExpression: "username = :username",
+            ExpressionAttributeValues: {
+                ":username": username
+            }
+        }
+        const data = await dbClient.query(params).promise();
+        res.status(200).json(data.Items);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to get todos"});
+    }
+
+})
+
 app.post('/signup', async (req: Request, res: Response) => {
     try{
         const { username, password } = req.body;
-        console.log('username and password received', username, password);
         const userId = uuidv4().toString();
-        console.log("Sign up request received");
-
         const checkExistingParams: DocumentClient.QueryInput = {
             TableName: "egemoroglu-users",
             IndexName: "username-index",
@@ -64,7 +82,6 @@ app.post('/signup', async (req: Request, res: Response) => {
 app.post('/signin', async (req, res) => {
     try{
         const {username, password} = req.body;
-        console.log('username and password received', username, password);
         console.log("Sign in request received");
         const params: DocumentClient.QueryInput = {
             TableName: "egemoroglu-users",
@@ -92,6 +109,93 @@ app.post('/signin', async (req, res) => {
         console.error(err);
         res.status(500).json({error: "Sign in request failed"});
     }
+})
+
+app.post('/todos', async (req: Request, res: Response) => {
+    try{
+        const { title, username, done } = req.body;
+        const todoId = uuidv4().toString();
+        console.log("Inside app.post(/todos)", {todoId, title, username, done});
+        const params: DocumentClient.PutItemInput = {
+            TableName: "egemoroglu-todos",
+            Item: {
+                todoId: todoId,
+                title: title,
+                username: username,
+                done: done
+            }
+        };
+        await dbClient.put(params).promise();
+        res.status(200).json({message: "Todo successfully added"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to add todo"});
+    }
+})
+app.post('/markDone', async (req: Request, res: Response) => {
+    try{
+        const {todoId} = req.query;
+        console.log("Marking the task with the id: ", todoId);
+        const params: DocumentClient.UpdateItemInput = {
+            TableName: "egemoroglu-todos",
+            Key: {
+                todoId: todoId
+            },
+            UpdateExpression: "set done = :done",
+            ExpressionAttributeValues: {
+                ":done": true
+            }
+        };
+        await dbClient.update(params).promise();
+        res.status(200).json({message: "Task successfully marked as done"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to mark task as done"});
+    }
+    
+})
+
+app.post('/markUndone', async (req: Request, res: Response) => {
+    try{
+        const {todoId} = req.query;
+        console.log("Marking the task with the id: ", todoId);
+        const params: DocumentClient.UpdateItemInput = {
+            TableName: "egemoroglu-todos",
+            Key: {
+                todoId: todoId
+            },
+            UpdateExpression: "set done = :done",
+            ExpressionAttributeValues: {
+                ":done": false
+            }
+        };
+        await dbClient.update(params).promise();
+        res.status(200).json({message: "Task successfully marked as undone"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to mark task as undone"});
+    }
+    
+})
+
+app.post('/delete', async (req: Request, res: Response) => {
+    try{
+        const  {todoId} = req.query;
+        console.log("Deleting the task with the id: ", todoId);
+        console.log("Received request to delete todos for id", todoId);
+        const params: DocumentClient.DeleteItemInput = {
+            TableName: "egemoroglu-todos",
+            Key: {
+                todoId: todoId
+            }
+        };
+        await dbClient.delete(params).promise();
+        res.status(200).json({message: "Task successfully deleted"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "Failed to delete Task"});
+    }
+    
 })
 
 app.listen(port, () => {
