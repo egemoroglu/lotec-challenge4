@@ -58,7 +58,7 @@ app.post('/signup', async (req: Request, res: Response) => {
             }
         };
         const data = await dbClient.query(checkExistingParams).promise();
-        if(data.Items?.length > 0){
+        if((data.Items?.length ?? 0) > 0){
             return res.status(409).json({error: "User already exists"});
         }
 
@@ -92,17 +92,17 @@ app.post('/signin', async (req, res) => {
             }
         };
         const data = await dbClient.query(params).promise();
-        if(data.Items?.length === 0){
-            return res.status(404).json({error: "User not found"});
+        const items = data.Items ?? [];
+        if (items.length === 0) {
+            return res.status(404).json({ error: "User not found" });
         }
 
-        const user = data.Items[0];
-        if(user.password != password) {
-            return res.status(401).json({error: "Invalid password"});
-        
+        const user = items[0];
+        if (user.password != password) {
+            return res.status(401).json({ error: "Invalid password" });
         }
 
-        res.status(200).json({message: "User successfully signed in"});
+        res.status(200).json({ message: "User successfully signed in" });
         
     }catch(err) {
 
