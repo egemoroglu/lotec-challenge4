@@ -1,14 +1,13 @@
 import express, {Express,Request, Response} from 'express';
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser';
-import  dynamoDB  from '../database/connection.js';
+import  dynamoDB  from './database/connection.ts';
 import {v4 as uuidv4} from 'uuid';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import cors from 'cors';
-dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -16,13 +15,13 @@ const port = process.env.PORT || 3000;
 const dbClient: DocumentClient = dynamoDB;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+dotenv.config({path: path.join(__dirname, '../.env')})
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
 app.use(cors());
-
 
 app.get('/todos',async (req: Request, res: Response) => {
     const { username } = req.query;
