@@ -1,7 +1,7 @@
 import express, {Express,Request, Response} from 'express';
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser';
-import  dynamoDB  from './database/connection.js';
+import  dynamoDB  from '../database/connection.js';
 import {v4 as uuidv4} from 'uuid';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 import path from 'path';
