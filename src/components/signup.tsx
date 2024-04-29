@@ -14,7 +14,7 @@ export const SignUpPage: React.FC = () => {
             alert("User successfully signed up")
             console.log(response.data);
         } catch (error) {
-            alert('Error: User cannot be signed up')
+            alert("User Already Exists")
         }
         setUsername("");
         setPassword("");
@@ -27,6 +27,7 @@ export const SignUpPage: React.FC = () => {
                 type="text"
                 className='username-input'
                 placeholder="Username"
+                required={true}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
@@ -35,6 +36,7 @@ export const SignUpPage: React.FC = () => {
                 placeholder="Password"
                 className='password-input'
                 value={password}
+                required={true}
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button className='signup-btn' onClick={handleSignUp}>Sign Up</button>
