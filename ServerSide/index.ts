@@ -10,12 +10,11 @@ import { dirname } from 'path';
 import cors from 'cors';
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
-
 const dbClient: DocumentClient = dynamoDB;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({path: path.join(__dirname, '../.env')})
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

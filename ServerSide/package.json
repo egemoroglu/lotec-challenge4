@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec vite-node index.ts",
     "build": "npx tsc",
-    "start": "dist/index.js",
+    "start": "nodemon --exec vite-node index.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

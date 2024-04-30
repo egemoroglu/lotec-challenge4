@@ -1,22 +1,47 @@
 terraform {
+  backend "s3" {
+    bucket  = "egemoroglu-lotec-challenge-4-tfstate"
+    key     = "terraform.tfstate"
+    region  = "eu-north-1"
+    encrypt = true
+  }
+
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
+
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 2.13"
+
+    }
   }
-
-
 }
 module "tf-state" {
   source      = "./modules/tf-state"
   bucket_name = local.bucket_name
 
 }
+resource "aws_ecr_repository" "egemoroglu-ecr-repository" {
+  name = "egemoroglu-ecr-repository"
+}
 
-module "ecrRepo" {
-  source        = "./modules/ecr"
-  ecr_repo_name = local.ecr_repo_name
+resource "docker_image" "backend" {
+  name = "${aws_ecr_repository.egemoroglu-ecr-repository.repository_url}:latest"
+  build {
+    context    = "../ServerSide"
+    dockerfile = "backend.dockerfile"
+  }
+  provisioner "local-exec" {
+    command = "aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin ${aws_ecr_repository.egemoroglu-ecr-repository.repository_url}"
+  }
+  provisioner "local-exec" {
+    command = "docker push ${aws_ecr_repository.egemoroglu-ecr-repository.repository_url}:latest"
+  }
+
 
 }
 
