@@ -45,6 +45,24 @@ resource "docker_image" "backend" {
 
 }
 
+module "ecsCluster" {
+  source = "./modules/ecs"
+
+  ecs_app_cluster_name = local.ecs_app_cluster_name
+  availability_zone    = local.availability_zones
+
+  ecs_app_task_family          = local.ecs_app_task_family
+  ecr_repo_url                 = aws_ecr_repository.egemoroglu-ecr-repository.repository_url
+  container_port               = local.container_port
+  ecs_app_task_name            = local.ecs_app_task_name
+  ecs_task_execution_role_name = local.ecs_task_execution_role_name
+
+
+  application_load_balancer_name = local.application_load_balancer_name
+  target_group_name              = local.target_group_name
+  ecs_app_service_name           = local.ecs_app_service_name
+}
+
 resource "aws_dynamodb_table" "egemoroglu-users" {
   name         = "egemoroglu-users"
   billing_mode = "PAY_PER_REQUEST"
