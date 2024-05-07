@@ -27,7 +27,7 @@ export function Todo() {
     const fetchTodos = async () => {
       try {
         // Make API call to fetch todos for the signed-in user
-        const response = await axios.get(`http://localhost:3000/todos?username=${username}`);
+        const response = await axios.get(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/todos?username=${username}`);
         console.log(response.data);
         if(response.data){
           setTodos(response.data);
@@ -42,7 +42,7 @@ export function Todo() {
   const handleTaskAdd = async () => {
     try {
       // Make API call to add a new task
-      const response = await axios.post(`http://localhost:3000/todos`, {
+      const response = await axios.post(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/todos`, {
         title: newTaskTitle,
         username: username,
         done: false
@@ -58,7 +58,7 @@ export function Todo() {
   const handleDeleteTask = async (todoId: string) => {
     try {
       // Make API call to delete a task
-      const response = await axios.post(`http://localhost:3000/delete?todoId=${todoId}`);
+      const response = await axios.post(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/delete?todoId=${todoId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -69,7 +69,7 @@ export function Todo() {
   const handleMarkDone = async (todoId: string) => {
     try{
       // Make API call to mark a task as done
-      const response = await axios.post(`http://localhost:3000/markdone?todoId=${todoId}`);
+      const response = await axios.post(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/markdone?todoId=${todoId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error marking task as done:', error);
@@ -79,7 +79,7 @@ export function Todo() {
   const handleMarkUndone = async (todoId: string) => {
     try{
       // Make API call to mark a task as undone
-      const response = await axios.post(`http://localhost:3000/markUndone?todoId=${todoId}`);
+      const response = await axios.post(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/markUndone?todoId=${todoId}`);
       console.log(response.data);
     } catch (error) {
       console.error('Error marking task as undone:', error);
@@ -90,7 +90,7 @@ export function Todo() {
   const handleUpdateTask = async (todoId: string, updatedTaskTitle: string) => {
     try {
       // Make API call to update the title of a task
-      const response = await axios.post(`http://localhost:3000/update`, {
+      const response = await axios.post(`https://xr2tx2mgwj.us-east-1.awsapprunner.com/update`, {
         todoId: todoId,
         title: updatedTaskTitle
       });

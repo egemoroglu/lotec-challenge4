@@ -7,7 +7,7 @@ export const SignUpPage: React.FC = () => {
 
     const handleSignUp = async () => {
         try {
-            const response = await axios.post("http://localhost:3000/signup", {
+            const response = await axios.post("https://xr2tx2mgwj.us-east-1.awsapprunner.com/signup", {
                 username,
                 password
             });
