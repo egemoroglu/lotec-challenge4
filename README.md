@@ -1,30 +1,30 @@
-# React + TypeScript + Vite
+Lotec-Challenge-4
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+In this challenge, the aim is to implement a React-ts project with the Vite bundler and implement necessary Amazon Web Services to serve the Project.
 
-Currently, two official plugins are available:
+Functionality Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User should be able to sign up with a username and password (user existence must be verified)
+- User should be able to sign up with the username and password (user existence must be verified)
+- User should be able to add tasks and see the list of tasks
+- User should be able to delete tasks
+- User should be able to update the task title
+- User should be able to mark a task as completed of incompleted
+- User should be able to see the list of tasks as completed and incompleted separately
 
-## Expanding the ESLint configuration
+Technical Requirements
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Server side and client side must be seperated
+- Both sides must have their own package.json files
+- Both sides must be run separately on different terminals
+- A docker image must be created of the Server side
+- Client side must be built with Vite bundler
 
-- Configure the top-level `parserOptions` property like this:
+AWS Requirements (Prefer US or other server locations which Apprunner is available)
+- Front end of the project must be served on an S3 bucket (Static Website should be enabled)
+- Cloudfront must be configured to distribute the front end of the project
+- Docker image of the the backend must be created and pushed in into ECR
+- An apprunner service must pull the backend image from ECR and serve the backend
+- Policies must be configured for Apprunner and S3 bucket for these services to communicate
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Additionally, all the AWS configuration must be done via Terraform and AWS CLI must not be used to configure services. Terraform-state must be saved inside another S3 bucket.
