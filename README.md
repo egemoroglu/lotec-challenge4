@@ -21,6 +21,7 @@ Technical Requirements
 - Client side must be built with Vite bundler
 
 AWS Requirements (Prefer US or other server locations which Apprunner is available)
+
 - Front end of the project must be served on an S3 bucket (Static Website should be enabled)
 - Cloudfront must be configured to distribute the front end of the project
 - Docker image of the the backend must be created and pushed in into ECR
