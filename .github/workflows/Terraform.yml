@@ -28,7 +28,7 @@ jobs:
       run: ls -al
 
     - name: Change Directory
-      run: cd Terraform
+      run: cd $GITHUB_WORKSPACE/Terraform
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
