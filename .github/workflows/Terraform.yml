@@ -45,9 +45,9 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/Terraform
         terraform init
-        AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
-        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        terraform plan -input=false
+        terraform plan -input=false \
+          -var="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+          -var="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
