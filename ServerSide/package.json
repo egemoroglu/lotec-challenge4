@@ -8,7 +8,7 @@
     "build": "npx tsc",
     "start": "nodemon --exec vite-node index.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "dependencies": {
     "aws-sdk": "^2.1602.0",
@@ -27,6 +27,7 @@
     "@typescript-eslint/parser": "^7.2.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
+    "jsdom": "^24.0.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",

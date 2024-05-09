@@ -204,6 +204,38 @@ app.post("/delete", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/deleteUser", async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+    const checkExistingParams: DocumentClient.QueryInput = {
+      TableName: "egemoroglu-users",
+      IndexName: "username-index",
+      KeyConditionExpression: "username = :username",
+      ExpressionAttributeValues: {
+        ":username": username,
+      },
+    };
+    const data = await dbClient.query(checkExistingParams).promise();
+    const items = data.Items ?? [];
+    if(items.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const params: DocumentClient.DeleteItemInput = {
+      TableName: "egemoroglu-users",
+      Key: {
+        userId: items[0].userId,
+      },
+    };
+    await dbClient.delete(params).promise();
+    res.status(200).json({ message: "User successfully deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete User" });
+  }
+  
+
+})
+
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
