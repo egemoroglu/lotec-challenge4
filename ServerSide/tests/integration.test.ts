@@ -3,7 +3,7 @@ import {test, expect} from 'vitest';
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import dynamoDB from '../database/connection';
 
-const baseUrl: string = 'https://xr2tx2mgwj.us-east-1.awsapprunner.com';
+const baseUrl: string = 'http://localhost:3000';
 
 const dbClient: DocumentClient = dynamoDB;
 
