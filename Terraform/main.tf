@@ -116,7 +116,6 @@ resource "null_resource" "sync_files_to_s3" {
   triggers = {
     bucket_id = aws_s3_bucket.egemoroglu-lotec-challenge-4-frontend.bucket
   }
-
   provisioner "local-exec" {
     command = "aws s3 sync ../ClientSide/dist s3://${aws_s3_bucket.egemoroglu-lotec-challenge-4-frontend.bucket}"
   }
