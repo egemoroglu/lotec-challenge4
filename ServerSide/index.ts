@@ -4,9 +4,8 @@ import bodyParser from "body-parser";
 import dynamoDB from "./database/connection.ts";
 import { v4 as uuidv4 } from "uuid";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import path from "path";
+import path, {dirname} from "path";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
 import cors from "cors";
 
 const app: Express = express();

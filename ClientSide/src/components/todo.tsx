@@ -1,4 +1,3 @@
-//import todoData from "../../todo.json";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
@@ -22,6 +21,7 @@ export function Todo() {
 
   useEffect(() => {
     fetchTodos();
+  
   }, [fetchTrigger])
     
     const fetchTodos = async () => {
@@ -125,8 +125,7 @@ export function Todo() {
         <option value="undones">Undone Tasks</option>
       </select>
 
-      <>
-        {filteredTodos.length === 0 ? (
+      {filteredTodos.length === 0 ? (
           <p>No todos found</p>
         ) : (
           <>
@@ -163,7 +162,6 @@ export function Todo() {
             </div>
           </>
         )}
-      </>
     </div>
   );
 }
