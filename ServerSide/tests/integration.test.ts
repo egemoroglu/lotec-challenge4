@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from 'axios';
 import {test, expect} from 'vitest';
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import dynamoDB from '../database/connection';
+import dynamoDB from '../../database/connection';
 
 const baseUrl: string = 'https://xr2tx2mgwj.us-east-1.awsapprunner.com';
 
