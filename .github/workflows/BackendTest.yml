@@ -21,6 +21,10 @@ jobs:
               uses: actions/setup-node@v1
               with:
                 node-version: ${{ matrix.node-version }}
+            - name: Install Dependencies in Root
+              run: | 
+                cd $GITHUB_WORKSPACE
+                npm install
 
             - name: Install Dependencies
               run: | 
