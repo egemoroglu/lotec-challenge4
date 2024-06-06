@@ -25,6 +25,10 @@ jobs:
               run: | 
                 cd $GITHUB_WORKSPACE
                 npm install
+            - name: Source Environment Variables
+              run: |
+                cd $GITHUB_WORKSPACE
+                source .env
 
             - name: Install Dependencies
               run: | 
