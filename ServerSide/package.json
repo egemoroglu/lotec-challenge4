@@ -2,7 +2,7 @@
   "name": "serverside",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --exec vite-node index.ts",
     "build": "npx tsc",
