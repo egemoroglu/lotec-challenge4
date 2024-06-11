@@ -1,46 +1,55 @@
 # name: Backend Test
 # on:
-#     push:
-#         branches: [ "main" ]
-#     pull_request:
-#         branches: [ "main" ]
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
 # jobs:
-#     test:
-#         runs-on: ubuntu-latest
-        
-#         strategy:
-#             matrix:
-#                 node-version: [20.x]
+#   test:
+#     runs-on: ubuntu-latest
+    
+#     strategy:
+#       matrix:
+#         node-version: [20.x]
 
-#         steps:
-#             - name: Checkout
-#               uses: actions/checkout@v2
+#     permissions:
+#       id-token: write
+#       contents: read
 
-#             - name: Set up Node.js ${{ matrix.node-version }}
-#               uses: actions/setup-node@v1
-#               with:
-#                 node-version: ${{ matrix.node-version }}
-#             - name: Install Dependencies in Root
-#               run: | 
-#                 cd $GITHUB_WORKSPACE
-#                 npm install
-#             - name: Source Environment Variables
-#               run: |
-#                 cd $GITHUB_WORKSPACE
-#                 source .env
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-#             - name: Install Dependencies
-#               run: | 
-#                 cd $GITHUB_WORKSPACE/ServerSide 
-#                 npm install
+#       - name: Set up Node.js ${{ matrix.node-version }}
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
 
-#             - name: Test
-#               run: |
-#                 cd $GITHUB_WORKSPACE/ServerSide
-#                 npm run test
-#               env:
-#                 REGION: secrets.REGION 
-#                 AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID 
-#                 AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+#           aws-region: ${{ secrets.REGION }}
 
+#       - name: Install Dependencies in Root
+#         run: | 
+#           cd $GITHUB_WORKSPACE
+#           npm install
+
+#       - name: Source Environment Variables
+#         run: |
+#           cd $GITHUB_WORKSPACE
+#           source .env
+
+#       - name: Install Dependencies
+#         run: | 
+#           cd $GITHUB_WORKSPACE/ServerSide 
+#           npm install
+
+#       - name: Test
+#         run: |
+#           cd $GITHUB_WORKSPACE/ServerSide
+#           npm run test
+#         env:
+#           REGION: ${{secrets.REGION}}
