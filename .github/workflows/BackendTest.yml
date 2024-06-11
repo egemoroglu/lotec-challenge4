@@ -8,10 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [20.x]
 
     permissions:
       id-token: write
@@ -21,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js 
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -36,11 +32,6 @@ jobs:
         run: | 
           cd $GITHUB_WORKSPACE
           npm install
-
-      - name: Source Environment Variables
-        run: |
-          cd $GITHUB_WORKSPACE
-          source .env
 
       - name: Install Dependencies
         run: | 
